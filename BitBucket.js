@@ -58,9 +58,9 @@ function get_pr_info(request) {
 
 function get_participant_pr_info(request) {
   const participant = {
-    displayname: request.content.pullRequest.participant.user.displayName,
-    avatar: 'https://sources.byzaneo.com/users/'+request.content.pullRequest.participant.user.name+'/avatar.png?s=16',
-    status: request.content.pullRequest.participant.status
+    displayname: request.content.participant.user.displayName,
+    avatar: 'https://sources.byzaneo.com/users/'+request.content.participant.user.name+'/avatar.png?s=16',
+    status: request.content.participant.status
   };
   return participant;
 }
@@ -255,7 +255,7 @@ class Script {
      * @params {object} request
      */
   process_incoming_request({ request }) {
-    console.log('>>> REQUEST: '+JSON.stringify(request));
+    //console.log('>>> REQUEST: '+JSON.stringify(request));
     /*return {
       content: {
       	"text": JSON.stringify(request, null, 2)
@@ -273,9 +273,15 @@ class Script {
     } catch(e) {
       console.log('sources event error', e);
       return {
-        error: {
-          success: false,
-          message: `${e.message || e} ${JSON.stringify(request)}`
+        {
+          "username": "Error",
+          "text": "Error message",
+          "attachments": [
+            {
+              "title": "Rocket.Chat",
+              "text": JSON.stringify(request)
+            }
+          ]
         }
       };
     }
